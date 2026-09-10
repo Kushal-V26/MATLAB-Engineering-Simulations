@@ -1,10 +1,3 @@
-% Group number - 34
-% Group Members:
-% 1. Barani Kalimuthu - 
-% 2. Madhumitha - 
-% 3. Shri Harissh Vijayakumar - 23278755
-% 4. Thaanush Vethathiri Sakthikumaravel - 
-
 %% Task 1
 clc;
 clear;
