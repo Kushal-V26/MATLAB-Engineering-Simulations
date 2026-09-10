@@ -7,18 +7,17 @@ A computational structural optimization framework implemented in MATLAB using Se
 ### Baseline vs. Single-Constraint Optimization
 | Task 1: Initial Deformed Structure | Task 2: Optimized (Bounds Only) |
 | :---: | :---: |
-| ![Task 1 Initial](Results/Task1_Initial_Deformed.png) | ![Task 2 Bounds Only](Results/Task2_Bounds_Only.png) |
+| ![Task 1 Initial](Results/Task%201.png) | ![Task 2 Bounds](Results/Task%202.png) |
 
 ### Constrained Optimization & Topology Scaling
 | Task 3: Linear Equality Constraint | Task 5: SQP Nonlinear Constrained |
 | :---: | :---: |
-| ![Task 3 Linear Eq](Results/Task3_Linear_Eq.png) | ![Task 5 SQP](Results/Task5_SQP.png) |
+| ![Task 3 Linear](Results/Task%203.png) | ![Task 5 SQP](Results/Task%205.png) |
 
 ### Industrial Application
 | Task 7: Optimized Crane Structure |
 | :---: |
-| ![Task 7 Crane](Results/Task7_Crane_Optimized.png) |
-
+| ![Task 7 Crane](Results/Task%207.png) |
 ---
 
 ## Mathematical Formulation
