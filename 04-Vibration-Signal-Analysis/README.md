@@ -13,6 +13,12 @@
 
 ## 3. Structural Bending & Uncertainty Quantification
 
-| *GUM Combined Uncertainty (Task 8)* | *Monte Carlo Distributions (Task 9)* |
-| ----- | ----- |
-| <img src="Results/GUM%20uncerntainty.png" width="800"> | <img src="Results/Monte%20Carlo%20Distribution.png" width="800"> |
+**GUM Combined Uncertainty (Task 8)**
+<br>
+<img src="Results/GUM%20uncerntainty.png" width="900">
+
+<br>
+
+**Monte Carlo Distributions (Task 9)**
+<br>
+<img src="Results/Monte%20Carlo%20Distribution.png" width="900">
