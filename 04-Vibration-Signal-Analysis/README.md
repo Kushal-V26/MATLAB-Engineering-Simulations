@@ -7,7 +7,7 @@
 
 ### 2. Frequency-Domain Signal Denoising & Reconstruction
 | Filtered Reconstruction Comparison (Task 7) |
-| :---: |
+| <img src="Results/Signal%20filtering%20comparision.png" width="400"> |
 | ![Filtered Signal](Results/Signal%20filtering%20comparision.png) |
 
 ### 3. Structural Bending & Uncertainty Quantification
