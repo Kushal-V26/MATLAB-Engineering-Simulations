@@ -1,4 +1,4 @@
-# Dynamic Crane Simulation & ODE Integration (Experiment LTD)
+### Dynamic Crane Simulation & ODE Integration (Experiment LTD)
 
 This module investigates the nonlinear dynamic behavior of a cantilever crane boom carrying a swinging payload. 
 The mechanical system is formulated as a coupled second-order nonlinear differential equation of motion, converted into a first-order state-space system, 
