@@ -25,8 +25,7 @@ All generated kinematic trajectories, phase portraits, internal force diagrams, 
 * **Task 2: State-Space ODE Formulation (`f.m`, `externeKraft.m`)**
   * Formulates the angular momentum balance about the suspension point into the 2nd-order nonlinear equation of motion:
     $$m l^2 \ddot{\varphi}(t) + d l^2 \dot{\varphi}(t) + m g l \sin\varphi(t) = F_e(t) l$$
-  * Transforms the system into a 1st-order vector field $\dot{\mathbf{u}} = \mathbf{f}(\mathbf{u}, t)$ with state vector $\mathbf{u} = [\varphi, \dot{\varphi}]^T$:
-    $$\begin{bmatrix} \dot{u}_1 \\\\ \dot{u}_2 \end{bmatrix} = \begin{bmatrix} u_2 \\\\ -\frac{g}{l}\sin(u_1) - \frac{d}{m}u_2 + \frac{F_e(t)}{m l} \end{bmatrix}$$
+  * Transforms the system into a 1st-order vector field $\dot{\mathbf{u}} = \mathbf{f}(\mathbf{u}, t)$ with state vector 
 
 * **Task 3: Numerical Integration & Kinematics (`hauptskriptKran.m`, `trafoPolarNachKartesisch.m`)**
   * Integrates the state equations over time for Scenarios A, B, and C using `ode45` and `ode23`.
