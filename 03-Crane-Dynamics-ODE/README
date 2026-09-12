@@ -1,0 +1,66 @@
+# Dynamic Crane Simulation & ODE Integration (Experiment LTD)
+
+This module models and simulates the nonlinear motion of a crane boom carrying a swinging payload under damping and external forces. The system is solved using MATLAB ODE solvers (`ode45` and `ode23`) to analyze motion trajectories, dynamic rod forces, and bending stresses across the beam.
+
+---
+
+## Simulation Results
+
+### 1. Motion & Phase-Space Response
+| Scenario B: Undamped Free Motion | Scenario C: Damped & Forced Motion |
+| :---: | :---: |
+| ![Scenario B Motion](Results/Scenario-B/motion.png) | ![Scenario C Motion](Results/Scenario-C/motion.png) |
+
+### 2. Dynamic Rod Tension & Internal Forces
+| Scenario B Forces | Scenario C Forces |
+| :---: | :---: |
+| ![Scenario B Forces](Results/Scenario-B/forces.png) | ![Scenario C Forces](Results/Scenario-C/forces.png) |
+
+### 3. Girder Bending Stresses σ(x, y)
+| Scenario B Stress Distribution | Scenario C Stress Distribution |
+| :---: | :---: |
+| ![Scenario B Stress](Results/Scenario-B/stress.png) | ![Scenario C Stress](Results/Scenario-C/stress.png) |
+
+### 4. Solver Accuracy Benchmark
+| Energy Drift Comparison (`ode45` vs. `ode23`) |
+| :---: |
+| ![Solver Benchmark](Results/solver_comparison.png) |
+
+---
+
+## System Modeling & Core Equations
+
+### 1. Equation of Motion
+The swinging payload mass $m$ is modeled as a pendulum with length $l$ attached to the crane boom. Using angular momentum balance:
+$$m l^2 \ddot{\varphi}(t) + d l^2 \dot{\varphi}(t) + m g l \sin\varphi(t) = F_e(t) l$$
+
+This is converted into a 1st-order state-space system $\dot{\mathbf{u}} = \mathbf{f}(\mathbf{u}, t)$ with state vector $\mathbf{u} = [\varphi, \dot{\varphi}]^T$ and solved with explicit Runge-Kutta solvers.
+
+### 2. Dynamic Rod Force
+The total axial tension force $Z(t)$ acting on the suspension rod combines gravity and centrifugal forces:
+$$Z(t) = m \left( g \cos\varphi + l \dot{\varphi}^2 \right)$$
+
+### 3. Cantilever Bending Stresses
+Internal normal force $N(x, t)$ and bending moment $M(x, t)$ are computed along the cantilever girder ($0 \le x \le L$). Bending normal stresses are evaluated via Euler-Bernoulli theory:
+$$\sigma(x, y, t) = \frac{N(x, t)}{A} - \frac{M(x, t)}{I_z} y$$
+
+Peak stress concentrations occur at the clamped root ($x = 0\text{ m}$) at the outer fibers ($y = \pm 0.25\text{ m}$).
+
+---
+
+## Solver Benchmark Findings
+
+* **`ode45` (4th/5th order):** Accurately preserves mechanical energy and remains numerically stable across loose tolerances.
+* **`ode23` (2nd/3rd order):** Shows noticeable numerical damping/energy drift unless error tolerances are set below $10^{-4}$.
+
+---
+
+## Script Files
+
+* `hauptskriptKran.m`: Main driver script configuring and running all simulation scenarios.
+* `parameter.m`: System geometry ($L, b, a$), cross-sections, and material properties.
+* `f.m`: Vector field function computing state derivatives for ODE solvers.
+* `berechneEnergien.m`: Computes kinetic, potential, and total energy.
+* `berechneStabkraft.m`: Calculates dynamic rod tension $Z(t)$.
+* `berechneSpannungen.m`: Calculates normal stress distributions along the girder.
+* `filmSpannungen.m`: Generates contour animations of dynamic girder stress fields.
