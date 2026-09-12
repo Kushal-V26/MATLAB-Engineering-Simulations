@@ -17,7 +17,6 @@ All generated kinematic trajectories, phase portraits, internal force diagrams, 
 * **[Results/solver_comparison.png](Results/solver_comparison.png):** Numerical benchmark evaluating mechanical energy conservation between `ode45` and `ode23` across varying integration tolerances.
 
 ---
-
 ## Tasks & Simulation Workflow
 
 * **Task 1: System Parameterization & Modeling (`parameter.m`)**
