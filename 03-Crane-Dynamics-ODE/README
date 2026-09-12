@@ -1,66 +1,65 @@
-# Dynamic Crane Simulation & ODE Integration (Experiment LTD)
+# Structural Sizing & Stiffness Optimization (Experiment KTmfk)
 
-This module models and simulates the nonlinear motion of a crane boom carrying a swinging payload under damping and external forces. The system is solved using MATLAB ODE solvers (`ode45` and `ode23`) to analyze motion trajectories, dynamic rod forces, and bending stresses across the beam.
+This module implements a numerical optimization framework in MATLAB using Sequential Quadratic Programming (`fmincon` with the `'sqp'` algorithm). The goal is to minimize vertical deflection at the loaded node of a 2D truss structure by optimizing bar cross-sectional areas under bound, mass/stiffness, and stress constraints.
 
 ---
 
-## Simulation Results
+## Key Visualizations
 
-### 1. Motion & Phase-Space Response
-| Scenario B: Undamped Free Motion | Scenario C: Damped & Forced Motion |
+### Baseline vs. Single-Constraint Optimization
+| Task 1: Initial Deformed Structure | Task 2: Optimized (Bounds Only) |
 | :---: | :---: |
-| ![Scenario B Motion](Results/Scenario-B/motion.png) | ![Scenario C Motion](Results/Scenario-C/motion.png) |
+| ![Task 1](Results/Task1.png) | ![Task 2](Results/Task2.png) |
 
-### 2. Dynamic Rod Tension & Internal Forces
-| Scenario B Forces | Scenario C Forces |
+### Constrained Optimization & Topology Scaling
+| Task 3: Linear Equality Constraint | Task 5: SQP Nonlinear Constrained |
 | :---: | :---: |
-| ![Scenario B Forces](Results/Scenario-B/forces.png) | ![Scenario C Forces](Results/Scenario-C/forces.png) |
+| ![Task 3](Results/Task3.png) | ![Task 5](Results/Task5.png) |
 
-### 3. Girder Bending Stresses σ(x, y)
-| Scenario B Stress Distribution | Scenario C Stress Distribution |
-| :---: | :---: |
-| ![Scenario B Stress](Results/Scenario-B/stress.png) | ![Scenario C Stress](Results/Scenario-C/stress.png) |
-
-### 4. Solver Accuracy Benchmark
-| Energy Drift Comparison (`ode45` vs. `ode23`) |
+### Industrial Application
+| Task 7: Optimized Crane Structure |
 | :---: |
-| ![Solver Benchmark](Results/solver_comparison.png) |
+| ![Task 7](Results/Task7.png) |
+
+*(Note: Ensure your image paths inside `Results/` match your exact filenames, e.g., `Task1.png` or `Task 1.png` with `%20`)*
 
 ---
 
-## System Modeling & Core Equations
+## Optimization Formulation
 
-### 1. Equation of Motion
-The swinging payload mass $m$ is modeled as a pendulum with length $l$ attached to the crane boom. Using angular momentum balance:
-$$m l^2 \ddot{\varphi}(t) + d l^2 \dot{\varphi}(t) + m g l \sin\varphi(t) = F_e(t) l$$
+* **Objective Function:** Minimize the vertical deflection $u_{y,F}$ at the loaded node to maximize global structural stiffness.
+* **Design Variables:** Vector $\mathbf{x} = [x_1, x_2, \dots, x_m]^T$ representing cross-sectional scaling factors such that $A_i = x_i \cdot A_0$.
 
-This is converted into a 1st-order state-space system $\dot{\mathbf{u}} = \mathbf{f}(\mathbf{u}, t)$ with state vector $\mathbf{u} = [\varphi, \dot{\varphi}]^T$ and solved with explicit Runge-Kutta solvers.
+### Constraints Implemented
 
-### 2. Dynamic Rod Force
-The total axial tension force $Z(t)$ acting on the suspension rod combines gravity and centrifugal forces:
-$$Z(t) = m \left( g \cos\varphi + l \dot{\varphi}^2 \right)$$
+1. **Bound Constraints (Task 2):**
+   $$0.01 \le x_i \le 5.0$$
+   Prevents mathematical singularities from zero-area members and avoids unrealistically large bars.
 
-### 3. Cantilever Bending Stresses
-Internal normal force $N(x, t)$ and bending moment $M(x, t)$ are computed along the cantilever girder ($0 \le x \le L$). Bending normal stresses are evaluated via Euler-Bernoulli theory:
-$$\sigma(x, y, t) = \frac{N(x, t)}{A} - \frac{M(x, t)}{I_z} y$$
+2. **Total Mass / Stiffness Conservation (Task 3 & 4):**
+   $$\sum_{i=1}^{m} (EA)_i = \text{Target Stiffness}$$
+   Enforces a linear equality constraint ($\sum EA = 825\text{ kN}$ in Task 3, reduced to $500\text{ kN}$ in Task 4) to redistribute material without increasing total structure weight.
 
-Peak stress concentrations occur at the clamped root ($x = 0\text{ m}$) at the outer fibers ($y = \pm 0.25\text{ m}$).
+3. **Allowable Stress Limits (Task 5):**
+   $$\sigma_i(\mathbf{x}) = \frac{|S_i(\mathbf{x})|}{x_i \cdot A_0} \le 80\text{ MPa}$$
+   Nonlinear inequality constraints implemented via `nonlcon` to ensure no member exceeds permissible yield stress under the applied external load ($F = 100\text{ kN}$).
+
+4. **Complex Industrial Crane Structure (Task 7):**
+   Scales the SQP optimization workflow to a high-DOF asymmetric crane frame under global stiffness ($\sum EA = 2175\text{ kN}$) and stress constraints.
 
 ---
 
-## Solver Benchmark Findings
+## Key Findings
 
-* **`ode45` (4th/5th order):** Accurately preserves mechanical energy and remains numerically stable across loose tolerances.
-* **`ode23` (2nd/3rd order):** Shows noticeable numerical damping/energy drift unless error tolerances are set below $10^{-4}$.
+* **Bounds-Only (Task 2):** Maximizing all scaling factors to $x_i = 5.0$ dramatically reduces deflection (by $\approx 80\%$), but drastically increases total structural mass.
+* **Equality Constrained (Task 3 & 5):** The SQP optimizer strategically redistributes material—thickening heavily loaded diagonal and lower-chord members while reducing low-stress members toward the lower bound ($x_i \to 0.01$).
+* **Stress Constrained (Task 5):** Successfully prevents mechanical yielding ($\sigma \le 80\text{ MPa}$) while maintaining minimum possible nodal displacement.
 
 ---
 
 ## Script Files
 
-* `hauptskriptKran.m`: Main driver script configuring and running all simulation scenarios.
-* `parameter.m`: System geometry ($L, b, a$), cross-sections, and material properties.
-* `f.m`: Vector field function computing state derivatives for ODE solvers.
-* `berechneEnergien.m`: Computes kinetic, potential, and total energy.
-* `berechneStabkraft.m`: Calculates dynamic rod tension $Z(t)$.
-* `berechneSpannungen.m`: Calculates normal stress distributions along the girder.
-* `filmSpannungen.m`: Generates contour animations of dynamic girder stress fields.
+* `Group_X_V4.m` (or `truss_optimization_sqp.m`): Main optimization driver script.
+* `objectiveFunction.m`: Computes vertical displacement $u_{y,F}(\mathbf{x})$ using the direct stiffness method.
+* `constraintFunction.m` / `nonlcon.m`: Evaluates nonlinear bar stress inequality constraints.
+* `berechneStabkraefte.m`: Computes internal member axial forces $S_i(\mathbf{x})$.
