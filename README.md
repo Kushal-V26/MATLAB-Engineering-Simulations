@@ -17,6 +17,7 @@ MATLAB-Engineering-Simulations/
 └── 04-Vibration-Signal-Analysis/     # Sensor FFT spectral filtering, symbolic beam bending & Monte Carlo
 
 ---
+
 ```
 ## Modules Overview
 
