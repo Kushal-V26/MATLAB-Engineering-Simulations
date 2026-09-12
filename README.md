@@ -1,4 +1,4 @@
-# MATLAB Engineering Simulation Lab
+# MATLAB Applied Engineering Simulations Lab
 
 This repository contains my MATLAB scripts, numerical models, and simulation results completed for the **Laboratory Course MATLAB** at FAU Erlangen-Nürnberg. 
 
